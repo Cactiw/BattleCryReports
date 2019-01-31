@@ -37,12 +37,18 @@ def report_handling(bot, update):
         battle_time = datetime.datetime.combine(message_datetime.date(), datetime.time(hour=1))
         while message_datetime - battle_time >= datetime.timedelta(hours=8):
             battle_time += datetime.timedelta(hours = 8)
+    request = "select nickname from inspirations where nickname = %s and battle_time = %s"
+    cursor.execute(request, (nickname, battle_time))
+    row = cursor.fetchone()
+    if row is not None:
+        bot.send_message(chat_id=update.message.chat_id, text="Данный репорт уже есть на канале!")
+        return
     response = "⚡️<b>{0}</b> was inspired by <b>{1}</b>\n\n🕒 Battle on {2}".format(nickname, inspired_by, battle_time.strftime("%D %H:%M"))
     bot.send_message(chat_id = POST_CHANNEL_ID, text = response, parse_mode = 'HTML')
     bot.send_message(chat_id = mes.chat_id, text = "Спасибо! Отправлено на канал\nМожешь кидать сюда следующие репорты")
     castle = nickname[0]
-    request = "insert into inspirations(castle, nickname, inspured_by_nickname) values (%s, %s, %s)"
-    cursor.execute(request, (castle, nickname, inspired_by))
+    request = "insert into inspirations(castle, nickname, inspured_by_nickname, battle_time) values (%s, %s, %s, %s)"
+    cursor.execute(request, (castle, nickname, inspired_by, battle_time))
 
 def old_battle_cry(bot, update):
     bot.send_message(chat_id = update.message.chat_id,

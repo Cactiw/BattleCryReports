@@ -12,7 +12,8 @@ conn = psycopg2.connect("dbname={0} user={1} password={2}".format(psql_creditals
 conn.set_session(autocommit = True)
 cursor = conn.cursor()
 
-POST_CHANNEL_ID = -1001184691738
+TEST_CHANNEL_ID = -1001184691738
+POST_CHANNEL_ID = -1001322687438
 CHAT_WARS_ID = 265204902
 
 moscow_tz = pytz.timezone('Europe/Moscow')
