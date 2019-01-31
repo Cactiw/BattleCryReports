@@ -2,7 +2,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters
 import logging, datetime
 
 
-from work_materials.globals import updater, dispatcher, job, POST_CHANNEL_ID, local_tz, moscow_tz
+from work_materials.globals import updater, dispatcher, job, POST_CHANNEL_ID, local_tz, moscow_tz, cursor
 from work_materials.filters.report_filters import filter_correct_report, filter_incorrect_report, filter_not_forward_report, \
     filter_not_report, filter_old_battle_cry, filter_not_pm
 
@@ -27,7 +27,7 @@ def help(bot, update):
 def report_handling(bot, update):
     mes = update.message
     nickname = mes.text.partition(" ")[0]
-    inspired_by = mes.text.partition("You were inspired by ")[2]
+    inspired_by = mes.text.partition("You were inspired by ")[2].splitlines()[0]
     message_datetime = local_tz.localize(update.message.forward_date).astimezone(tz=moscow_tz).replace(tzinfo = None)
     time = message_datetime - message_datetime.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
     if time < datetime.timedelta(hours=1):  #   Дневная битва прошлого дня
@@ -40,6 +40,9 @@ def report_handling(bot, update):
     response = "⚡️<b>{0}</b> was inspired by <b>{1}</b>\n\n🕒 Battle on {2}".format(nickname, inspired_by, battle_time.strftime("%D %H:%M"))
     bot.send_message(chat_id = POST_CHANNEL_ID, text = response, parse_mode = 'HTML')
     bot.send_message(chat_id = mes.chat_id, text = "Спасибо! Отправлено на канал\nМожешь кидать сюда следующие репорты")
+    castle = nickname[0]
+    request = "insert into inspirations(castle, nickname, inspured_by_nickname) values (%s, %s, %s)"
+    cursor.execute(request, (castle, nickname, inspired_by))
 
 def old_battle_cry(bot, update):
     bot.send_message(chat_id = update.message.chat_id,
