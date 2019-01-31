@@ -4,7 +4,7 @@ import logging, datetime
 
 from work_materials.globals import updater, dispatcher, job, POST_CHANNEL_ID, local_tz, moscow_tz
 from work_materials.filters.report_filters import filter_correct_report, filter_incorrect_report, filter_not_forward_report, \
-    filter_not_report, filter_old_battle_cry
+    filter_not_report, filter_old_battle_cry, filter_not_pm
 
 #   Выставляем логгироввание
 console = logging.StreamHandler()
@@ -59,8 +59,10 @@ def not_report(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Пожалуйста, пришлите форвард ответа @ChatWarsBot на команду "
                                                           "/report с наличием сработавшего скилла Battle Cry!")
 
+def skip(bot, update):
+    return
 
-
+dispatcher.add_handler(MessageHandler(filter_not_pm, skip))
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', help))
 

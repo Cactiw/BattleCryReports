@@ -45,3 +45,9 @@ class FilterOldBattleCry(BaseFilter):
                'Battle Cry.' in message.text and 'You were inspired by' not in message.text
 
 filter_old_battle_cry = FilterOldBattleCry()
+
+class FilterNotPM(BaseFilter):
+    def filter(self, message):
+        return message.chat_id < 0
+
+filter_not_pm = FilterNotPM()
