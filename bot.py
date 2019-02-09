@@ -2,7 +2,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters
 import logging, datetime
 
 
-from work_materials.globals import updater, dispatcher, job, POST_CHANNEL_ID, local_tz, moscow_tz, cursor
+from work_materials.globals import updater, dispatcher, job, POST_CHANNEL_ID, local_tz, moscow_tz, cursor, TEST_CHANNEL_ID
 from work_materials.filters.report_filters import filter_correct_report, filter_incorrect_report, filter_not_forward_report, \
     filter_not_report, filter_old_battle_cry, filter_not_pm
 
@@ -26,7 +26,7 @@ def help(bot, update):
 
 def report_handling(bot, update):
     mes = update.message
-    nickname = mes.text.partition(" ")[0]
+    nickname = mes.text.partition("⚔")[0]
     inspired_by = mes.text.partition("You were inspired by ")[2].splitlines()[0]
     message_datetime = local_tz.localize(update.message.forward_date).astimezone(tz=moscow_tz).replace(tzinfo = None)
     time = message_datetime - message_datetime.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
