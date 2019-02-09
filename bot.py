@@ -26,7 +26,7 @@ def help(bot, update):
 
 def report_handling(bot, update):
     mes = update.message
-    nickname = mes.text.partition("⚔")[0]
+    nickname = mes.text.partition("⚔")[0][:-1]
     inspired_by = mes.text.partition("You were inspired by ")[2].splitlines()[0]
     message_datetime = local_tz.localize(update.message.forward_date).astimezone(tz=moscow_tz).replace(tzinfo = None)
     time = message_datetime - message_datetime.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
@@ -44,7 +44,7 @@ def report_handling(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Данный репорт уже есть на канале!")
         return
     response = "⚡️<b>{0}</b> was inspired by <b>{1}</b>\n\n🕒 Battle on {2}".format(nickname, inspired_by, battle_time.strftime("%D %H:%M"))
-    bot.send_message(chat_id = POST_CHANNEL_ID, text = response, parse_mode = 'HTML')
+    bot.send_message(chat_id = TEST_CHANNEL_ID, text = response, parse_mode = 'HTML')
     bot.send_message(chat_id = mes.chat_id, text = "Спасибо! Отправлено на канал\nМожешь кидать сюда следующие репорты")
     castle = nickname[0]
     request = "insert into inspirations(castle, nickname, inspured_by_nickname, battle_time) values (%s, %s, %s, %s)"
