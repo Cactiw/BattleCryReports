@@ -44,7 +44,7 @@ def report_handling(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Данный репорт уже есть на канале!")
         return
     response = "⚡️<b>{0}</b> was inspired by <b>{1}</b>\n\n🕒 Battle on {2}".format(nickname, inspired_by, battle_time.strftime("%D %H:%M"))
-    bot.send_message(chat_id = TEST_CHANNEL_ID, text = response, parse_mode = 'HTML')
+    bot.send_message(chat_id = POST_CHANNEL_ID, text = response, parse_mode = 'HTML')
     bot.send_message(chat_id = mes.chat_id, text = "Спасибо! Отправлено на канал\nМожешь кидать сюда следующие репорты")
     castle = nickname[0]
     request = "insert into inspirations(castle, nickname, inspured_by_nickname, battle_time) values (%s, %s, %s, %s)"
