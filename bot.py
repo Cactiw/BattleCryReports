@@ -1,5 +1,8 @@
 from telegram.ext import CommandHandler, MessageHandler, Filters
-import logging, datetime
+
+import logging
+import datetime
+import re
 
 
 from work_materials.globals import updater, dispatcher, job, POST_CHANNEL_ID, local_tz, moscow_tz, cursor, TEST_CHANNEL_ID
@@ -43,6 +46,10 @@ def report_handling(bot, update):
     if row is not None:
         bot.send_message(chat_id=update.message.chat_id, text="Данный репорт уже есть на канале!")
         return
+    tag = re.search("\\[(\\S+)\\]", nickname)
+    if tag:
+        tag = tag.group(1)
+        inspired_by = "[🤷🏿‍♀️/{}]{}".format(tag, inspired_by)
     response = "⚡️<b>{0}</b> was inspired by <b>{1}</b>\n\n🕒 Battle on {2}".format(nickname, inspired_by, battle_time.strftime("%D %H:%M"))
     bot.send_message(chat_id = POST_CHANNEL_ID, text = response, parse_mode = 'HTML')
     bot.send_message(chat_id = mes.chat_id, text = "Спасибо! Отправлено на канал\nМожешь кидать сюда следующие репорты")
