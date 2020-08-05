@@ -27,7 +27,7 @@ def help(bot, update):
 def report_handling(bot, update):
     mes = update.message
     nickname = mes.text.partition("⚔")[0][:-1]
-    inspired_by = mes.text.partition("You were inspired by ")[2].splitlines()[0]
+    inspired_by = mes.text.partition("Тебя вдохновил ")[2].splitlines()[0]
     message_datetime = local_tz.localize(update.message.forward_date).astimezone(tz=moscow_tz).replace(tzinfo = None)
     time = message_datetime - message_datetime.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
     if time < datetime.timedelta(hours=1):  #   Дневная битва прошлого дня

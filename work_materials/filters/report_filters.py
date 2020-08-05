@@ -7,7 +7,7 @@ class FilterCorrectReport(BaseFilter):
             if message.forward_from is None:
                 return False
             return message.forward_from.id == CHAT_WARS_ID and "Твои результаты в бою:" in message.text and \
-                   'Battle Cry. You were inspired by' in message.text
+                   'Боевой клич. Тебя вдохновил' in message.text
 
 
 filter_correct_report = FilterCorrectReport()
